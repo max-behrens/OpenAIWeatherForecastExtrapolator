@@ -1,5 +1,6 @@
 <script setup>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
+import PostLogo from '@/Components/PostLogo.vue';
 import { Head } from "@inertiajs/inertia-vue3";
 import BreezeButton from "@/Components/Button.vue";
 import Pagination from "@/Components/Pagination.vue";
@@ -111,9 +112,9 @@ function setSearchInput(input, event) {
                                             <!-- Image -->
                                             <div class="flex justify-center">
                                                 <div class="avatar">
-                                                    <div class="w-20 rounded">
-                                                        <img :src="post.featured_image ? '/storage/' + post.featured_image : '/images/example-image.png'"
-                                                            alt="Tailwind-CSS-Avatar-component" />
+                                                    <div class="postLogo w-20 rounded">
+                                                        <PostLogo class="block h-7 w-auto text-white" />
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -212,9 +213,9 @@ function setSearchInput(input, event) {
                                                 <td scope="row"
                                                     class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap whitespace-normal break-words">
                                                     <div class="avatar">
-                                                        <div class="w-20 rounded">
-                                                            <img :src="post.featured_image ? '/storage/' + post.featured_image : '/images/example-image.png'"
-                                                                alt="Tailwind-CSS-Avatar-component" />
+                                                        <div class="postLogo w-10 rounded">
+                                                            <PostLogo class="block h-7 w-auto text-white" />
+
                                                         </div>
                                                     </div>
                                                 </td>

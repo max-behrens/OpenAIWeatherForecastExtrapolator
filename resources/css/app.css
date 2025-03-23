@@ -26,6 +26,10 @@ main {
     transform: scale(0.68);
 }
 
+.postLogo {
+    aspect-ratio: auto !important;
+}
+
 
 /* Ensures that table columns fit the available width */
 .table {
