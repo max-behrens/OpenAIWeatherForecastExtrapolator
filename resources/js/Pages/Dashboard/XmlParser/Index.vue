@@ -29,15 +29,15 @@ const getTimestamps = async () => {
     <!-- Using BreezeAuthenticatedLayout with a custom header slot -->
     <BreezeAuthenticatedLayout>
       <template #header>
-        <h2 class="text-xl font-semibold leading-tight text-gray-800"> XML Parser </h2>
+        <h2 class="text-md font-semibold leading-tight text-white"> XML Parser </h2>
         </template>
   
       <!-- Main content of the page -->
       <div class="py-12">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-8 bg-white border-b border-gray-200">
+            <div class="shadow-sm sm:rounded-lg">
+                    <div class="p-8 border-b border-gray-200">
                         <div class="relative">
                         
                             <!-- Button to trigger the getTimestamps function -->
@@ -50,7 +50,7 @@ const getTimestamps = async () => {
                     
                             <!-- Conditional rendering of the timestamps if available -->
                             <div v-if="timestamps.length" class="mt-4">
-                                <h3 class="text-lg font-medium text-gray-800">Matching Timestamps:</h3>
+                                <h3 class="text-lg font-medium text-white">Matching Timestamps:</h3>
                                 <ul class="list-disc pl-5 space-y-2">
                                     <li 
                                     v-for="timestamp in timestamps" 

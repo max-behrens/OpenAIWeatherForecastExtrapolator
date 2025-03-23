@@ -72,3 +72,32 @@ Route::prefix('dashboard')
 require __DIR__ . '/auth.php';
 
 Route::get('/{post:slug}', [FrontPostController::class, 'show'])->name('front.posts.show');
+
+
+
+// Static asset handler for production
+if (app()->environment('production')) {
+    Route::get('/build/assets/{filename}', function ($filename) {
+        $path = public_path("build/assets/{$filename}");
+        
+        if (!file_exists($path)) {
+            return response("Asset not found: {$filename}", 404);
+        }
+        
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $mimeTypes = [
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'svg' => 'image/svg+xml',
+        ];
+        
+        $mimeType = $mimeTypes[$extension] ?? 'text/plain';
+        
+        return response(file_get_contents($path))
+            ->header('Content-Type', $mimeType)
+            ->header('Cache-Control', 'public, max-age=31536000');
+    })->where('filename', '.*');
+}

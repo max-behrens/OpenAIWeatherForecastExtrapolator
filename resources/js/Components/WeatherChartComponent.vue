@@ -81,7 +81,7 @@ onMounted(renderChart);
 </script>
 
 <template>
-    <div class="w-full h-96 bg-white p-4 shadow-md rounded-lg">
+    <div class="w-full h-96 bg-gray-200 p-4 shadow-md rounded-lg">
         <canvas ref="chartCanvas"></canvas>
     </div>
 </template>

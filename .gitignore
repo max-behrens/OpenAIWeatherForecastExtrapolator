@@ -5,6 +5,9 @@
 /storage/*.key
 /vendor
 .env
+.env.production
+deploy.bat
+serverless.yml
 .env.backup
 .phpunit.result.cache
 Homestead.json
@@ -14,3 +17,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+vue_template_dump.sql
+laravel-inertia-app.zip

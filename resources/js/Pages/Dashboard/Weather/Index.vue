@@ -310,7 +310,7 @@ function setCityInput(input) {
     <Head title="Weather" />
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800"> Weather API </h2>
+            <h2 class="text-md font-semibold leading-tight text-white-800"> Weather API </h2>
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -322,11 +322,11 @@ function setCityInput(input) {
                         <span>{{ $page.props.flash.message }}</span>
                     </div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-8 bg-white border-b border-gray-200">
+                <div class="shadow-sm sm:rounded-lg">
+                    <div class="p-8 border-b border-gray-200">
                         <div class="relative">
                             <div class="mt-6 mb-6">
-                                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Weather API</label>
+                                <label for="default-search" class="mb-2 text-sm font-medium text-white-900 sr-only dark:text-white-300">Weather API</label>
                             </div>
                             <div class="overflow-x-clip">
                                 <!-- Error message display -->
@@ -334,7 +334,7 @@ function setCityInput(input) {
 
                                 <!-- Weather Search Input -->
                                 <div class="weather-search">
-                                    <input id="weather-search-input" type="text" v-debounce:300="setCityInput" class="input w-full max-w-xs" placeholder="Enter City..."/>
+                                    <input id="weather-search-input" type="text" v-debounce:300="setCityInput" class="input w-full max-w-xs placeholder-white text-white" placeholder="Enter City..."/>
                                     <button @click="fetchWeather" class="fetch-button mt-4 btn btn-accent block max-w-ws"><strong>Get Weather</strong></button>
                                 </div>
 
@@ -416,10 +416,10 @@ function setCityInput(input) {
                                   <!-- Weather Forecast Results -->
                                 <div class="hidden md:block overflow-x-auto">
                                   <div v-if="forecastData" class="mt-10">
-                                    <h3 class="text-xl font-semibold mb-4 text-center">Daily Average Forecast for {{ city }}</h3>
+                                    <h3 class="text-sm font-semibold mb-4 text-center">Daily Average Forecast for {{ city }}</h3>
                                     <div class="flex space-x-4 overflow-x-auto justify-between">
                                       <div v-for="(forecast, index) in forecastData" :key="index" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded-lg relative w-64">
-                                        <h4 class="text-lg font-semibold mb-2">{{ forecast.formattedTime }}</h4>
+                                        <h4 class="text-sm font-semibold mb-2">{{ forecast.formattedTime }}</h4>
                                         <p><strong>Temperature:</strong> {{ forecast.temperature.toFixed(2) }}°C</p>
                                         <p><strong>Feels Like:</strong> {{ forecast.feels_like.toFixed(2) }}°C</p>
                                         <p><strong>Humidity:</strong> {{ forecast.humidity }}%</p>
@@ -430,7 +430,7 @@ function setCityInput(input) {
 
                                   <!-- Weather Calculation Results -->
                                   <div v-if="calculationResults" class="mt-20">
-                                    <h3 class="text-xl font-semibold mb-4 text-center">Weather Fluctuation Values</h3>
+                                    <h3 class="text-sm font-semibold mb-4 text-center">Weather Fluctuation Values</h3>
 
                                     <!-- Group temperature, humidity, and pressure changes -->
                                     <div class="flex space-x-4 overflow-x-auto justify-between">
@@ -457,7 +457,7 @@ function setCityInput(input) {
 
                                   <!-- AI-Generated Weather Insights -->
                                   <div v-if="aiResponseResults && Object.keys(aiResponseResults).length > 0 && aiResponseResults.temperatureExplanation !== '**'" class="mt-10">
-                                    <h3 class="text-xl font-semibold mb-4 text-center">Fluctuation Data Contextualised By OpenAI</h3>
+                                    <h3 class="text-sm font-semibold mb-4 text-center">Fluctuation Data Contextualised By OpenAI</h3>
                                       <div class="flex space-x-4 overflow-x-auto justify-between">
                                           <div v-if="aiResponseResults.temperatureExplanation" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
                                               <h4 class="font-semibold">Temperature</h4>
@@ -484,7 +484,7 @@ function setCityInput(input) {
                                     </button>
 
                                     <!-- Chatbot Window -->
-                                    <div v-if="isChatbotOpen" class="bg-white border border-gray-300 shadow-lg rounded-lg p-4 w-full">
+                                    <div v-if="isChatbotOpen" class="border border-gray-300 shadow-lg rounded-lg p-4 w-full">
                                         <div class="flex justify-between items-center border-b pb-2">
                                             <h4 class="text-lg font-semibold">Chatbot</h4>
                                             <button @click="toggleChatbot" class="text-red-500">✖</button>
@@ -494,7 +494,7 @@ function setCityInput(input) {
                                         <div class="chatbot-messages h-60 overflow-y-auto p-2">
                                             <div v-for="(message, index) in chatbotMessages" :key="index" class="mb-2">
                                                 <div :class="message.isUser ? 'text-right' : 'text-left'">
-                                                    <span :class="message.isUser ? 'bg-blue-200' : 'bg-gray-200'" class="inline-block px-3 py-2 rounded">
+                                                    <span :class="message.isUser ? 'bg-blue-200' : 'bg-gray-200'" class="text-gray-900 inline-block px-3 py-2 rounded">
                                                         {{ message.text }}
                                                     </span>
                                                 </div>
@@ -503,7 +503,7 @@ function setCityInput(input) {
 
                                         <!-- Chat Input Field -->
                                         <div class="mt-2 flex">
-                                            <input v-model="chatbotInput" type="text" class="border px-2 py-1 flex-1 rounded-l" placeholder="Type a message..." />
+                                            <input v-model="chatbotInput" type="text" class="border px-2 py-1 flex-1 rounded-l placeholder-white text-white" placeholder="Type a message..." />
                                             <button @click="sendMessage" class="bg-blue-500 text-white px-3 py-1 rounded-r">Send</button>
                                         </div>
                                     </div>
@@ -512,7 +512,7 @@ function setCityInput(input) {
 
                               </div>
                               <div v-if="calculationResults" class="mt-20 mb-20">
-                                <h3 class="text-xl font-semibold mb-4 text-center">Weather Data Visuals</h3>
+                                <h3 class="text-sm font-semibold mb-4 text-center">Weather Data Visuals</h3>
                                 <WeatherChartComponent v-if="calculationResults" :calculationResults="calculationResults" />
 
 

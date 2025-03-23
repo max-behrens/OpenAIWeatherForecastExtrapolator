@@ -75,7 +75,7 @@ function setSearchInput(input, event) {
 
     <Head title="Posts" />
     <BreezeAuthenticatedLayout> <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800"> User Posts </h2>
+            <h2 class="text-md font-semibold leading-tight text-white"> User Posts </h2>
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-9xl sm:px-6 lg:px-8">
@@ -89,8 +89,8 @@ function setSearchInput(input, event) {
                         <span>{{ $page.props.flash.message }}</span>
                     </div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
+                <div class="shadow-sm sm:rounded-lg max-w-7xl mx-auto overflow-x-hidden">
+                    <div class="p-6 border-b border-gray-200">
                         <div class="mb-2">
                             <Link class="btn btn-accent" :href="route('posts.create')">Add Post</Link>
                         </div>
@@ -99,15 +99,15 @@ function setSearchInput(input, event) {
                                 <label for="default-search"
                                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
                                 <input id="default-search" type="text" v-debounce:300="setSearchInput"
-                                    class="input w-full max-w-xs" placeholder="Search...">
+                                    class="input w-full max-w-xs placeholder-white text-white" placeholder="Search...">
                             </div>
-                            <div class="block md:block lg:overflow-x-auto">
+                            <div class="block md:block">
 
 
                                 <!-- Mobile view -->
                                 <div class="block md:hidden">
-                                    <div v-for="post in posts.data" :key="post.id" class="mb-4 bg-white rounded-lg shadow p-4">
-                                        <div class="grid grid-cols-1 gap-2">
+                                    <div v-for="post in posts.data" :key="post.id" class="mb-4 rounded-lg shadow p-4">
+                                        <div class="grid grid-cols-1 gap-2 break-words">
                                             <!-- Image -->
                                             <div class="flex justify-center">
                                                 <div class="avatar">
@@ -159,14 +159,14 @@ function setSearchInput(input, event) {
 
 
                                 <!-- Desktop view -->
-                                <div class="hidden md:block overflow-x-auto">
-                                    <table class="table table-compact w-full text-center table-zebra border-collapse overflow-x-auto">
+                                <div class="hidden md:block">
+                                    <table class="table table-compact w-full text-center table-zebra border-collapse">
                                         <thead
-                                            class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+                                            class=" text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
                                             <tr>
                                                 <th class="sticky top-0 ">Image</th>
-                                                <th scope="col" class="px-6 py-3" @click="sort('id')">
-                                                    <span class="inline-flex px-6 py-3 w-full justify-between">
+                                                <th scope="col" class="" @click="sort('id')">
+                                                    <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         #
                                                         <SortArrowUp v-if="determineSortDirection('id', 'asc')">
                                                         </SortArrowUp>
@@ -174,8 +174,8 @@ function setSearchInput(input, event) {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="px-6 py-3" @click="sort('title')">
-                                                    <span class="inline-flex px-6 py-3 w-full justify-between">
+                                                <th scope="col" class="" @click="sort('title')">
+                                                    <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         Title
                                                         <SortArrowUp v-if="determineSortDirection('title', 'asc')">
                                                         </SortArrowUp>
@@ -183,8 +183,8 @@ function setSearchInput(input, event) {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="px-6 py-3" @click="sort('username')">
-                                                    <span class="inline-flex px-6 py-3 w-full justify-between">
+                                                <th scope="col" class="" @click="sort('username')">
+                                                    <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         Username
                                                         <SortArrowUp v-if="determineSortDirection('username', 'asc')">
                                                         </SortArrowUp>
@@ -192,8 +192,8 @@ function setSearchInput(input, event) {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="px-6 py-3" @click="sort('content')">
-                                                    <span class="inline-flex px-6 py-3 w-full justify-between items-center text-center">
+                                                <th scope="col" class="" @click="sort('content')">
+                                                    <span class="inline-flex px-6 py-3 w-full justify-center  items-center text-center">
                                                         Content
                                                         <SortArrowUp v-if="determineSortDirection('content', 'asc')">
                                                         </SortArrowUp>
@@ -201,9 +201,9 @@ function setSearchInput(input, event) {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">Publish</th>
-                                                <th scope="col" class="px-6 py-3">Edit</th>
-                                                <th scope="col" class="px-6 py-3">Delete</th>
+                                                <th scope="col" class="">Publish</th>
+                                                <th scope="col" class="">Edit</th>
+                                                <th scope="col" class="">Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>

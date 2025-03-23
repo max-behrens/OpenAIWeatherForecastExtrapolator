@@ -54,16 +54,15 @@ return [
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],
-            'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => '/tmp/laravel.log',
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
-        'daily' => [
+        'daily' => [    
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
