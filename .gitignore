@@ -6,6 +6,7 @@
 /vendor
 .env
 .env.production
+.env.example
 deploy.bat
 serverless.yml
 /serverless
