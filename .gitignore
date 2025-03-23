@@ -8,6 +8,7 @@
 .env.production
 deploy.bat
 serverless.yml
+/serverless
 .env.backup
 .phpunit.result.cache
 Homestead.json
