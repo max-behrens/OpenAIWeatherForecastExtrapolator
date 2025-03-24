@@ -31,15 +31,15 @@ const params = reactive({
 });
 
 watch(params, () => {
-    let p = params;
+    // let p = params;
 
-    Object.keys(p).forEach(key => {
-        if (p[key] == '') {
-            delete p[key];
-        }
-    });
+    // Object.keys(p).forEach(key => {
+    //     if (p[key] == '') {
+    //         delete p[key];
+    //     }
+    // });
 
-    Inertia.get(route('posts.index'), p, { preserveState: true, preserveScroll: true })
+    // Inertia.get(route('posts.index'), p, { preserveState: true, preserveScroll: true })
 });
 
 function sort(field) {
@@ -68,6 +68,23 @@ function publish(post, is_active) {
 
 function setSearchInput(input, event) {
     params.search = input;
+
+    if (event.key === 'Enter') {
+        searchPosts(); // Trigger the search function when Enter is pressed
+    }
+}
+
+
+function searchPosts() {
+    // Handle the search request to make it trigger the API call
+    Inertia.get(route('posts.index'), {
+        search: params.search,
+        field: params.field,
+        direction: params.direction
+    }, {
+        preserveState: true,
+        preserveScroll: true
+    });
 }
 
 </script>
@@ -100,6 +117,7 @@ function setSearchInput(input, event) {
                                 <label for="default-search"
                                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
                                 <input id="default-search" type="text" v-debounce:300="setSearchInput"
+                                    @keydown="setSearchInput($event.target.value, $event)" 
                                     class="input w-full max-w-xs placeholder-white text-white" placeholder="Search...">
                             </div>
                             <div class="block md:block">

@@ -12,6 +12,7 @@ class DashboardAIService
         Log::info('User input:', ['userInput' => $userInput]);
         Log::info('Calculation Results:', ['calculationResults' => $calculationResults]);
         Log::info('City:', ['city' => $city]);
+        Log::info('OpenAI Secret', ['secret' => config('services.openai.secret')]);
 
         $city = $city ?? 'Unknown City';
 

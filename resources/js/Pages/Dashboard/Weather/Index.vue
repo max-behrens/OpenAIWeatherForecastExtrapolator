@@ -207,20 +207,12 @@ const params = reactive({
 
 // Watch for changes in the `params`
 watch(params, () => {
-    let p = params;
 
-    Object.keys(p).forEach(key => {
-        if (p[key] == '') {
-            delete p[key]; // Remove empty values
-        }
-    });
 
-    // Reload the page (preserve scroll state)
-    Inertia.reload({ preserveScroll: true });
-
-    // Send the data to the route for saving chat
-    // Inertia.post(route('posts.saveChat'), p, { preserveState: true, preserveScroll: true });
 });
+
+const displayCity = ref('');
+
 
 // Fetch weather data method
 async function fetchWeather() {
@@ -234,14 +226,14 @@ async function fetchWeather() {
 
     console.log('HERE 1');
 
-
-
     const response = await axios.post(route('weather.getData'), { city: city.value, postId: props.postId });
 
     console.log('HERE 2');
 
-
     console.log('response: ', response);
+
+    displayCity.value = city.value;
+
 
     weatherData.value = response.data;
     forecastData.value = response.data.forecasts.map(forecast => {
@@ -256,7 +248,6 @@ async function fetchWeather() {
     });
 
     console.log('HERE 3');
-
 
     // ✅ Ensure `calculationResults` is set before calling `askAI`
     calculationResults.value = {
@@ -277,6 +268,8 @@ async function fetchWeather() {
 
     console.log('HERE 5');
 
+    // Add city to URL query parameter
+    updateUrlWithCity(city.value);
 
     // ✅ Only call AI if `calculationResults` is not empty
     if (calculationResults.value) {
@@ -292,6 +285,20 @@ async function fetchWeather() {
     aiResponseResults.value = null;
     console.error(error);
   }
+}
+
+// Function to update URL with city query parameter
+function updateUrlWithCity(cityName) {
+  if (!cityName) return;
+  
+  // Create a URL object with the current URL
+  const url = new URL(window.location.href);
+  
+  // Set the city query parameter
+  url.searchParams.set('city', cityName);
+  
+  // Update the URL without reloading the page
+  window.history.pushState({}, '', url.toString());
 }
 
 
@@ -345,7 +352,7 @@ function setCityInput(input) {
                                   <div class="block md:hidden">
                                       <!-- Weather Forecast Results -->
                                       <div v-if="forecastData" class="mt-10">
-                                          <h3 class="text-lg font-semibold mb-4 text-center">Daily Average Forecast for {{ city }}</h3>
+                                          <h3 class="text-lg font-semibold mb-4 text-center">Daily Average Forecast for {{ displayCity }}</h3>
                                           <div class="grid grid-cols-1 gap-4">
                                               <div v-for="(forecast, index) in forecastData" :key="index" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded-lg">
                                                   <h4 class="text-md font-semibold mb-2">{{ forecast.formattedTime }}</h4>
@@ -416,7 +423,7 @@ function setCityInput(input) {
                                   <!-- Weather Forecast Results -->
                                 <div class="hidden md:block overflow-x-auto">
                                   <div v-if="forecastData" class="mt-10">
-                                    <h3 class="text-sm font-semibold mb-4 text-center">Daily Average Forecast for {{ city }}</h3>
+                                    <h3 class="text-sm font-semibold mb-4 text-center">Daily Average Forecast for {{ displayCity }}</h3>
                                     <div class="flex space-x-4 overflow-x-auto justify-between">
                                       <div v-for="(forecast, index) in forecastData" :key="index" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded-lg relative w-64">
                                         <h4 class="text-sm font-semibold mb-2">{{ forecast.formattedTime }}</h4>
