@@ -5,51 +5,50 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
-  // Load env variables
   const env = loadEnv(mode, process.cwd(), '');
-  const baseUrl = env.ASSET_URL || '';
   
   return {
-    base: mode === 'production' ? baseUrl : '/',
+    base: mode === 'production' 
+      ? (env.ASSET_URL || env.APP_URL || '/') 
+      : '/',
     resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'resources/js'),
-        }
+      alias: {
+        '@': path.resolve(__dirname, 'resources/js'),
+      }
     },
     plugins: [
-        laravel({
-            input: 'resources/js/app.js',
-            refresh: true,
-        }),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
-        }),
-        react(),
+      laravel({
+        input: 'resources/js/app.js',
+        refresh: true,
+        // Add explicit build options
+        buildDirectory: 'public/build',
+      }),
+      vue({
+        template: {
+          transformAssetUrls: {
+            base: null,
+            includeAbsolute: false,
+          },
+        },
+      }),
+      react(),
     ],
     build: {
-        outDir: 'public/build',
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    vendor: ['vue', 'react', 'react-dom'],
-                },
-            },
+      outDir: 'public/build',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['vue', 'react', 'react-dom'],
+          },
         },
+      },
     },
     server: {
-        host: '0.0.0.0',
-        port: 5173,
-        hmr: {
-          host: 'localhost',
-        },
-    },
-    optimizeDeps: {
-        include: ['@angular/core', '@angular/common', 'rxjs', 'zone.js']
+      host: '0.0.0.0',
+      port: 5173,
+      hmr: {
+        host: 'localhost',
+      },
     },
   };
 });

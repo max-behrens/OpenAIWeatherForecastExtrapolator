@@ -48,7 +48,7 @@ function fileChange(event) {
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 border-b border-gray-200">
+                    <div class="p-5 border-b border-gray-200">
                         <input type="hidden" v-model="form.id">
 
                         <input type="checkbox" id="my-error-modal" class="modal-toggle" v-model="form.hasErrors" />

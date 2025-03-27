@@ -31,6 +31,12 @@ main {
 }
 
 
+.checkbox {
+    background-color: #578b87 !important;
+    border-color: #3d625f !important;
+}
+
+
 /* Ensures that table columns fit the available width */
 .table {
     table-layout: fixed;

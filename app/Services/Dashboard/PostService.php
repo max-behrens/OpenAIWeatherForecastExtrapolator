@@ -14,71 +14,85 @@ class PostService
 {
     public function datatable(Request $request): array
     {
+        // Retrieve search, sort, and pagination parameters from the request
         $search = $request->filled('search') ? $request->search : NULL;
         $sort_field = $request->filled('field') ? $request->field : 'updated_at';
         $sort_direction = $request->filled('direction') ? $request->direction : 'desc';
-
-
+        $page = $request->input('page', 1);  // Default to the first page if not provided
+        $perPage = $request->input('per_page', 3);  // Default to 10 posts per page if not provided
+    
         Log::info('search:', ['search' => $search]);
-
-
-        $posts = Post::query()
-        ->select([
-            'posts.id',
-            'posts.user_id',
-            'posts.title',
-            'posts.slug',
-            'posts.content',
-            'posts.is_active',
-            'posts.featured_image',
-            'posts.created_at',
-            'posts.updated_at',
-            'users.id as userid',
-            'users.name as username',
-        ])
-        ->join('users', 'users.id', '=', 'posts.user_id')
-        ->when($search, function ($query, $search) {
-            $query->search('title', $search);
-            $query->orSearch('slug', $search);
-            $query->orSearch('content', $search);
-        })
-        ->when($sort_field && $sort_direction, function ($query) use ($sort_field, $sort_direction) {
+    
+        // Begin building the query
+        $query = Post::query()
+            ->select([
+                'posts.id',
+                'posts.user_id',
+                'posts.title',
+                'posts.slug',
+                'posts.content',
+                'posts.is_active',
+                'posts.featured_image',
+                'posts.created_at',
+                'posts.updated_at',
+                'users.id as userid',
+                'users.name as username',
+            ])
+            ->join('users', 'users.id', '=', 'posts.user_id');
+    
+        // Apply search filters
+        if ($search) {
+            $query->when($search, function ($query) use ($search) {
+                $query->search('title', $search);
+                $query->orSearch('slug', $search);
+                $query->orSearch('content', $search);
+            });
+        }
+    
+        // Apply sorting
+        if ($sort_field && $sort_direction) {
             $query->orderBy($sort_field, $sort_direction);
-        })
-        ->paginate(10)
-        ->through(function ($post) {
-            $post->permissions = [
-                'create' => Auth::user()->can('create', Post::class),
-                'edit' => Auth::user()->can('update', $post),
-                'delete' => Auth::user()->can('delete', $post),
-                'publish' => Auth::user()->can('publish', $post),
-                'unpublish' => Auth::user()->can('unpublish', $post),
-            ];
-
-            $post->content_limited = Str::of($post->content)->limit(300);
-            $post->title_limited = Str::of($post->title)->limit(15);
-            $post->username_limited = Str::of($post->username)->limit(15);
-
-            return $post;
-        })
-        ->withQueryString();
-
-
-
-            Log::info('posts:', ['posts' => $posts]);
-
-
-
-
+        }
+    
+        // Pagination logic
+        $posts = $query->paginate($perPage, ['*'], 'page', $page)
+            ->through(function ($post) {
+                // Add permissions and content formatting
+                $post->permissions = [
+                    'create' => Auth::user()->can('create', Post::class),
+                    'edit' => Auth::user()->can('update', $post),
+                    'delete' => Auth::user()->can('delete', $post),
+                    'publish' => Auth::user()->can('publish', $post),
+                    'unpublish' => Auth::user()->can('unpublish', $post),
+                ];
+    
+                // Truncate content and title for display
+                $post->content_limited = Str::of($post->content)->limit(300);
+                $post->title_limited = Str::of($post->title)->limit(15);
+                $post->username_limited = Str::of($post->username)->limit(15);
+    
+                return $post;
+            })
+            ->withQueryString();  // Keeps the query parameters for pagination in the URL
+    
+        Log::info('posts:', ['posts' => $posts]);
+    
         return [
-            'posts' => $posts,
+            'posts' => $posts,  // Return paginated posts with pagination data
             'filters' => [
                 'search' => $search,
                 'field' => $sort_field,
                 'direction' => $sort_direction,
-            ]
+            ],
+            'pagination' => [
+                'current_page' => $posts->currentPage(),
+                'last_page' => $posts->lastPage(),
+                'per_page' => $posts->perPage(),
+                'total' => $posts->total(),
+            ],  // Return pagination data to be used in frontend
         ];
     }
+    
 
     public function storeFeaturedImage(Post $post, Request $request): string
     {

@@ -27,7 +27,8 @@ const form = useForm();
 const params = reactive({
     search: props.filters.search,
     field: props.filters.field,
-    direction: props.filters.direction
+    direction: props.filters.direction,
+    page: props.posts.current_page || 1,  // Track the current page
 });
 
 watch(params, () => {
@@ -87,6 +88,37 @@ function searchPosts() {
     });
 }
 
+
+// Functions for pagination
+function goToPage(page) {
+    params.page = page;
+    searchPosts();
+}
+
+function nextPage() {
+    if (props.posts.current_page < props.posts.last_page) {
+        params.page = props.posts.current_page + 1;
+        searchPosts();
+    }
+}
+
+function prevPage() {
+    if (props.posts.current_page > 1) {
+        params.page = props.posts.current_page - 1;
+        searchPosts();
+    }
+}
+
+function firstPage() {
+    params.page = 1;
+    searchPosts();
+}
+
+function lastPage() {
+    params.page = props.posts.last_page;
+    searchPosts();
+}
+
 </script>
 
 <template>
@@ -108,7 +140,7 @@ function searchPosts() {
                     </div>
                 </div>
                 <div class="shadow-sm sm:rounded-lg max-w-7xl mx-auto overflow-x-hidden">
-                    <div class="p-6 border-b border-gray-200">
+                    <div class="p-5 border-b border-gray-200">
                         <div class="mb-2">
                             <Link class="btn btn-accent" :href="route('posts.create')">Add Post</Link>
                         </div>
@@ -183,8 +215,8 @@ function searchPosts() {
                                         <thead
                                             class=" text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
                                             <tr>
-                                                <th class="sticky top-0 ">Image</th>
-                                                <th scope="col" class="" @click="sort('id')">
+                                                <th class="w-1/12 sticky top-0 ">Image</th>
+                                                <th class="w-1/12" scope="col" @click="sort('id')">
                                                     <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         #
                                                         <SortArrowUp v-if="determineSortDirection('id', 'asc')">
@@ -193,7 +225,7 @@ function searchPosts() {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="" @click="sort('title')">
+                                                <th class="w-1/12"  scope="col" @click="sort('title')">
                                                     <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         Title
                                                         <SortArrowUp v-if="determineSortDirection('title', 'asc')">
@@ -202,7 +234,7 @@ function searchPosts() {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="" @click="sort('username')">
+                                                <th class="w-1/12"  scope="col" @click="sort('username')">
                                                     <span class="inline-flex px-6 py-3 w-full justify-center ">
                                                         Username
                                                         <SortArrowUp v-if="determineSortDirection('username', 'asc')">
@@ -211,7 +243,7 @@ function searchPosts() {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="" @click="sort('content')">
+                                                <th class="w-4/12"  scope="col" @click="sort('content')">
                                                     <span class="inline-flex px-6 py-3 w-full justify-center  items-center text-center">
                                                         Content
                                                         <SortArrowUp v-if="determineSortDirection('content', 'asc')">
@@ -220,16 +252,15 @@ function searchPosts() {
                                                         </SortArrowDown>
                                                     </span>
                                                 </th>
-                                                <th scope="col" class="">Publish</th>
-                                                <th scope="col" class="">Edit</th>
-                                                <th scope="col" class="">Delete</th>
+                                                <th class="w-1/12"  scope="col">Publish</th>
+                                                <th class="w-1/12"  scope="col">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="post in posts.data" :key="post.id"
                                                 class=" bg-white border-b dark:bg-gray-800 ">
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap whitespace-normal break-words">
+                                                    class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap whitespace-normal break-words">
                                                     <div class="avatar">
                                                         <div class="postLogo w-10 rounded">
                                                             <PostLogo class="block h-7 w-auto text-white" />
@@ -238,43 +269,45 @@ function searchPosts() {
                                                     </div>
                                                 </td>
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
+                                                    class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
                                                     {{ post.id }} </td>
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap "
+                                                    class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap "
                                                     :title="post.title">
                                                     {{ post.title_limited }} </td>
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap "
+                                                    class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap "
                                                     :title="post.username">
                                                     {{ post.username_limited }} </td>
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-normal break-words "
+                                                    class="w-4/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-normal break-words "
                                                     :title="post.content">
                                                     {{ post.content_limited }} </td>
                                                 <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
+                                                    class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
                                                     <div v-if="post.permissions.publish && post.permissions.unpublish">
                                                         <input @change="publish(post.id, post.is_active)" type="checkbox"
                                                             true-value="1" false-value="0" v-model="post.is_active"
                                                             class="checkbox checkbox-md checkbox-accent" />
                                                     </div>
                                                 </td>
-                                                <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
-                                                    <div v-if="post.permissions.edit">
-                                                        <Link :href="route('posts.edit', post.id)" class="btn btn-warning">
-                                                        Edit</Link>
+                                                <td scope="row" class="w-1/12 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                                    <div class="mb-2" v-if="post.permissions.edit">
+                                                        <Link :href="route('posts.edit', post.id)" 
+                                                            class="font-bold text-black hover:bg-[#578b87] hover:text-white px-2 py-1 rounded transition">
+                                                            Edit
+                                                        </Link>
                                                     </div>
-                                                </td>
-                                                <td scope="row"
-                                                    class=" px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap ">
                                                     <button v-if="post.permissions.delete" @click="destroy(post.id)"
-                                                        class="btn btn-error">Delete</button>
+                                                        class="font-bold text-black hover:bg-red-600 hover:text-white px-2 py-1 rounded transition">
+                                                        Delete
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+
+
                                 </div>
                             </div>
                         </div>
