@@ -25,6 +25,7 @@ const form = useForm({
     title: '',
     slug: '',
     content: '',
+    is_active: 0,
     featured_image: null,
 });
 
@@ -79,7 +80,7 @@ function fileChange(event) {
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="text-md font-semibold leading-tight text-white">
-                Post Create
+                Create Post
             </h2>
         </template>
 
@@ -148,6 +149,26 @@ function fileChange(event) {
                                 ></textarea>
                                 <div v-if="form.errors.content" class="text-sm text-red-600">
                                     {{ form.errors.content }}
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex">
+                                    <div class="flex items-center mr-4">
+                                        <input id="inline-radio" type="radio" value="0" v-model="form.is_active"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="inline-radio"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not Published</label>
+                                    </div>
+                                    <div class="flex items-center mr-4">
+                                        <input id="inline-2-radio" type="radio" value="1" v-model="form.is_active"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="inline-2-radio"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Published</label>
+                                    </div>
+                                </div>
+
+                                <div v-if="form.errors.is_active" class="text-sm text-red-600">
+                                    {{ form.errors.is_active }}
                                 </div>
                             </div>
                             <button type="submit"
