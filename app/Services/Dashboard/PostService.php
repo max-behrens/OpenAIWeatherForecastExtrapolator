@@ -16,7 +16,7 @@ class PostService
     {
         // Retrieve search, sort, and pagination parameters from the request
         $search = $request->filled('search') ? $request->search : NULL;
-        $sort_field = $request->filled('field') ? $request->field : 'updated_at';
+        $sort_field = $request->filled('field') ? $request->field : 'created_at';
         $sort_direction = $request->filled('direction') ? $request->direction : 'desc';
         $page = $request->input('page', 1);  // Default to the first page if not provided
         $perPage = $request->input('per_page', 3);  // Default to 10 posts per page if not provided

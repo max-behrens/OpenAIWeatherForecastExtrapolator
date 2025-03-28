@@ -9,6 +9,14 @@ const props = defineProps({
   },
 });
 
+const firstLink = computed(() => {
+  return props.links.find(link => link.label === '1');
+});
+
+const lastLink = computed(() => {
+  return props.links.find(link => link.label === String(props.links.length - 2));
+});
+
 const prevUrl = computed(() => {
   const prev = props.links.find((link) => link.label === '« Previous');
   return prev ? prev.url : null;
@@ -18,8 +26,15 @@ const nextUrl = computed(() => {
   const next = props.links.find((link) => link.label === 'Next »');
   return next ? next.url : null;
 });
-</script>
 
+const isFirstPage = computed(() => {
+  return firstLink.value && firstLink.value.active;
+});
+
+const isLastPage = computed(() => {
+  return lastLink.value && lastLink.value.active;
+});
+</script>
 
 <template>
   <div v-if="links.length > 3" class="flex justify-center mt-4">
@@ -27,9 +42,9 @@ const nextUrl = computed(() => {
       <!-- First Button -->
       <Link
         v-if="links.length"
-        :href="links[1].url"
+        :href="firstLink ? firstLink.url : null"
         class="mb-1 mr-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white/10 text-gray-300"
-        :class="{ 'opacity-50 pointer-events-none': !links[1].url }"
+        :class="{ 'text-gray-400 pointer-events-none': isFirstPage }"
       >
         First
       </Link>
@@ -39,6 +54,7 @@ const nextUrl = computed(() => {
         v-if="prevUrl"
         :href="prevUrl"
         class="mb-1 mr-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white/10 text-gray-300"
+        :class="{ 'text-gray-400 pointer-events-none': isFirstPage }"
       >
         Previous
       </Link>
@@ -66,6 +82,7 @@ const nextUrl = computed(() => {
         v-if="nextUrl"
         :href="nextUrl"
         class="mb-1 mr-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white/10 text-gray-300"
+        :class="{ 'text-gray-400 pointer-events-none': isLastPage }"
       >
         Next
       </Link>
@@ -73,13 +90,12 @@ const nextUrl = computed(() => {
       <!-- Last Button -->
       <Link
         v-if="links.length"
-        :href="links[links.length - 2].url"
+        :href="lastLink ? lastLink.url : null"
         class="mb-1 mr-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white/10 text-gray-300"
-        :class="{ 'opacity-50 pointer-events-none': !links[links.length - 2].url }"
+        :class="{ 'text-gray-400 pointer-events-none': isLastPage }"
       >
         Last
       </Link>
     </div>
   </div>
 </template>
-

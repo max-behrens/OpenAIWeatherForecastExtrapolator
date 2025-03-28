@@ -19,7 +19,7 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="px-9 shrink-0 flex items-center">
+                            <div class="px-7 shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <BreezeApplicationLogo class="block h-7 w-auto text-white" />
                                 </Link>
@@ -30,7 +30,7 @@ const showingNavigationDropdown = ref(false);
                                 <BreezeNavLink 
                                     :href="route('dashboard')" 
                                     :active="route().current('dashboard')" 
-                                    class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                                    class="text-xs !text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
                                 >
                                     Dashboard
                                 </BreezeNavLink>
@@ -108,35 +108,35 @@ const showingNavigationDropdown = ref(false);
                         <BreezeResponsiveNavLink 
                             :href="route('dashboard')" 
                             :active="route().current('dashboard')" 
-                            class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                            class="text-xs text-white !bg-transparent hover:text-white focus:text-white active:text-white"
                         >
                             Dashboard
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink 
                             :href="route('posts.index')" 
                             :active="route().current('posts.index')" 
-                            class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                            class="text-xs text-white !bg-transparent hover:text-white focus:text-white active:text-white"
                         >
                             Posts
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink 
                             :href="route('weather.index')" 
                             :active="route().current('weather.index')" 
-                            class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                            class="text-xs text-white !bg-transparent hover:text-white focus:text-white active:text-white"
                         >
                             Weather API
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink 
                             :href="route('parse-xml')" 
                             :active="route().current('parse-xml')" 
-                            class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                            class="text-xs text-white !bg-transparent hover:text-white focus:text-white active:text-white"
                         >
                             XML Parser
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink 
                             :href="route('react.index')" 
                             :active="route().current('react.index')" 
-                            class="text-xs text-white hover:text-gray-300 focus:text-gray-300 active:text-gray-300"
+                            class="text-xs text-white !bg-transparent hover:text-white focus:text-white active:text-white"
                         >
                             React Page
                         </BreezeResponsiveNavLink>
@@ -150,7 +150,9 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <BreezeResponsiveNavLink :href="route('logout')" method="post" as="button" class="text-xs text-gray-300 hover:text-white">
+                            <BreezeResponsiveNavLink :href="route('logout')" method="post" as="button" 
+                            class="text-xs text-white hover:text-white !bg-transparent"
+                        >
                                 Log Out
                             </BreezeResponsiveNavLink>
                         </div>
