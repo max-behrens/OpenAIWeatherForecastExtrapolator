@@ -21,3 +21,6 @@ yarn-error.log
 /.vscode
 vue_template_dump.sql
 laravel-inertia-app.zip
+cloudformation-template-update-stack.json
+meta.json
+serverless-state.json
